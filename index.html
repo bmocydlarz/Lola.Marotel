@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lola Marotel — Étudiante AES · IUT de Roanne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Palette Vert-Bleu / Canard IUT de Roanne */
+    --teal: #00828A;
+    --teal-light: #00A3AD;
+    --teal-pale: rgba(0, 130, 138, 0.12);
+    --or: #c8a96e;
+
+    /* Fonds & Textes doux */
+    --fond-sombre: #1a1e21;      /* Gris très sombre au lieu du noir pur */
+    --gris-section: #24292e;     /* Gris doux pour les séparations de catégories */
+    --creme: #f7f8f9;            /* Crème clair très légèrement bleuté */
+    --blanc: #ffffff;
+    --texte-fonce: #1a1a1a;
+    --texte-clair: rgba(255, 255, 255, 0.85);
+
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fond-sombre);
+    color: var(--blanc);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAVIGATION ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: calc(18px + env(safe-area-inset-top, 0px)) 48px 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(26, 30, 33, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; letter-spacing: 0.04em;
+  }
+  .nav-logo span { color: var(--teal-light); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: rgba(255, 255, 255, 0.65); text-decoration: none;
+    font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--blanc); }
+  .nav-cta {
+    background: var(--teal); color: var(--blanc);
+    padding: 9px 22px; border-radius: 100px;
+    font-size: 0.82rem; letter-spacing: 0.06em;
+    text-decoration: none; transition: background 0.3s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--teal-light); transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh; position: relative;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; overflow: hidden;
+    padding: 120px 24px 60px;
+    background: var(--fond-sombre);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0, 130, 138, 0.22) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 80% at 80% 80%, rgba(200, 169, 110, 0.07) 0%, transparent 60%);
+  }
+  .hero-orb {
+    position: absolute; width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 163, 173, 0.18) 0%, transparent 70%);
+    animation: orb 6s ease-in-out infinite; pointer-events: none;
+  }
+  @keyframes orb {
+    0%, 100% { transform: scale(1) translate(0,0); opacity: 0.6; }
+    50% { transform: scale(1.15) translate(20px,-20px); opacity: 1; }
+  }
+  #hero > *:not(.hero-bg):not(.hero-orb) { position: relative; }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--teal-light); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 8vw, 7.5rem);
+    font-weight: 900; line-height: 1.0; letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--teal-light); }
+  .hero-sub {
+    margin-top: 24px; font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 300; color: rgba(255, 255, 255, 0.65); max-width: 520px;
+    opacity: 0; animation: fadeUp 1s ease 0.7s forwards;
+  }
+  .hero-badges {
+    margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .badge {
+    padding: 7px 18px; border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 0.75rem; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+  }
+  .badge.teal { border-color: var(--teal); color: var(--teal-light); background: var(--teal-pale); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION GÉNÉRIQUE ─── */
+  section { padding: 120px 48px; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 12px; font-weight: 600;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -0.01em;
+  }
+
+  /* ─── ABOUT ─── */
+  #about {
+    background: var(--creme); color: var(--texte-fonce);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center; padding: 120px 80px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .about-visual {
+    position: relative; height: 520px; border-radius: 24px; overflow: hidden;
+    background: #e2e5e8;
+  }
+  .about-img-parallax {
+    width: 100%; height: 140%;
+    background: linear-gradient(135deg, var(--teal) 0%, #004b50 60%, var(--fond-sombre) 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: -20%;
+    transition: transform 0.1s linear;
+  }
+  .about-avatar {
+    width: 220px; height: 220px; border-radius: 50%;
+    object-fit: cover; object-position: center top;
+    border: 4px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    display: block;
+  }
+  .about-deco {
+    position: absolute; bottom: -20px; right: -20px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: var(--or); opacity: 0.5; filter: blur(40px);
+  }
+  .about-content { display: flex; flex-direction: column; gap: 20px; }
+  .about-content .section-title { color: var(--texte-fonce); }
+  .about-content p { color: #444; font-size: 1rem; line-height: 1.8; font-weight: 300; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+  .stat-card { padding: 20px; border-radius: 16px; background: #fff; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--teal); }
+  .stat-label { font-size: 0.8rem; color: #666; margin-top: 4px; }
+
+  /* ─── FORMATION (Gris intermédiaire) ─── */
+  #formation {
+    background: var(--gris-section);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .formation-header { text-align: center; margin-bottom: 80px; }
+  .formation-header .section-label { color: var(--teal-light); }
+  .timeline { display: flex; flex-direction: column; max-width: 900px; margin: 0 auto; }
+  .timeline-row { display: contents; }
+  .timeline-item { display: grid; grid-template-columns: 140px 40px 1fr; align-items: start; padding: 0 0 64px; }
+  .timeline-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem; color: var(--teal-light);
+    font-weight: 700; padding-top: 4px; text-align: right;
+    padding-right: 24px; letter-spacing: 0.06em;
+  }
+  .timeline-connector { display: flex; flex-direction: column; align-items: center; height: 100%; }
+  .timeline-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--teal-light); border: 3px solid var(--gris-section);
+    box-shadow: 0 0 0 3px var(--teal); flex-shrink: 0; margin-top: 3px;
+    transition: transform 0.3s;
+  }
+  .timeline-item:hover .timeline-dot { transform: scale(1.4); }
+  .timeline-line {
+    flex: 1; width: 2px;
+    background: linear-gradient(to bottom, var(--teal-light), rgba(0, 163, 173, 0.08));
+    margin-top: 8px;
+  }
+  .timeline-item:last-child .timeline-line { display: none; }
+  .timeline-content { padding-left: 24px; }
+  .timeline-school {
+    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--teal-light); margin-bottom: 6px; font-weight: 600;
+  }
+  .timeline-degree { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+  .timeline-desc { color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; line-height: 1.7; }
+  .timeline-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tag {
+    padding: 4px 14px; border-radius: 100px;
+    border: 1px solid rgba(0, 163, 173, 0.4);
+    font-size: 0.72rem; color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ─── COMPÉTENCES (Gris sombre) ─── */
+  #competences {
+    background: var(--fond-sombre);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start; padding: 120px 80px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .skills-left .section-label { color: var(--teal-light); }
+  .skills-left .section-title { margin-bottom: 16px; }
+  .skills-left > p { color: rgba(255, 255, 255, 0.55); line-height: 1.8; margin-bottom: 32px; }
+  .skill-row { margin-bottom: 22px; }
+  .skill-name { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.88rem; color: rgba(255, 255, 255, 0.85); }
+  .skill-pct { color: var(--teal-light); font-weight: 500; }
+  .skill-track { height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden; }
+  .skill-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--teal), var(--teal-light));
+    width: 0; transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .skills-right { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .skill-card {
+    padding: 28px 22px; border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .skill-card:hover { border-color: var(--teal-light); transform: translateY(-4px); }
+  .skill-card-icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .skill-card-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 6px; }
+  .skill-card-desc { font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); line-height: 1.6; }
+
+  /* ─── EXPÉRIENCES (Clair) ─── */
+  #experiences {
+    background: var(--creme); color: var(--texte-fonce);
+    padding: 120px 80px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 60px; }
+  .exp-card {
+    padding: 36px; border-radius: 24px; background: #fff;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    position: relative; overflow: hidden;
+    transition: transform 0.4s, box-shadow 0.4s;
+  }
+  .exp-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .exp-card:hover::before { transform: scaleX(1); }
+  .exp-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); }
+  .exp-period { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; font-weight: 600; }
+  .exp-company { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+  .exp-role { font-size: 0.85rem; color: #777; margin-bottom: 16px; }
+  .exp-desc { font-size: 0.9rem; color: #444; line-height: 1.7; white-space: pre-line; }
+  .exp-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .exp-skill { padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; background: var(--teal-pale); color: var(--teal); font-weight: 500; }
+
+  /* ─── CONTACT (Thème canard profond) ─── */
+  #contact {
+    background: linear-gradient(135deg, var(--teal) 0%, #005a60 100%);
+    padding: 120px 48px; text-align: center; position: relative; overflow: hidden;
+  }
+  #contact::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255, 255, 255, 0.15), transparent);
+  }
+  #contact > * { position: relative; }
+  #contact .section-label { color: rgba(255, 255, 255, 0.8); }
+  #contact .section-title { color: #fff; margin-bottom: 20px; }
+  .contact-sub { color: rgba(255, 255, 255, 0.85); font-size: 1.05rem; margin-bottom: 48px; }
+  .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .contact-btn {
+    padding: 16px 36px; border-radius: 100px;
+    font-size: 0.9rem; font-weight: 500; text-decoration: none;
+    transition: all 0.3s; letter-spacing: 0.04em;
+  }
+  .contact-btn.primary { background: #fff; color: var(--teal); }
+  .contact-btn.primary:hover { background: var(--creme); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); }
+  .contact-btn.secondary { background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.35); }
+  .contact-btn.secondary:hover { background: rgba(255, 255, 255, 0.25); }
+  .contact-info { margin-top: 40px; color: rgba(255, 255, 255, 0.8); font-size: 0.85rem; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--fond-sombre);
+    padding: 32px 48px calc(32px + env(safe-area-inset-bottom, 0px));
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.78rem; color: rgba(255, 255, 255, 0.45);
+  }
+  footer strong { color: rgba(255, 255, 255, 0.7); font-weight: 500; }
+
+  /* ─── ANIMATIONS ─── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .d1 { transition-delay: 0.15s; }
+  .d2 { transition-delay: 0.3s; }
+  .d3 { transition-delay: 0.45s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: calc(16px + env(safe-area-inset-top, 0px)) 20px 16px; }
+    .nav-links { display: none; }
+    section { padding: 72px 20px; }
+    #about { grid-template-columns: 1fr; gap: 40px; padding: 72px 20px; }
+    .about-visual { height: 320px; border-radius: 20px; }
+    .about-img-parallax { top: 0; height: 100%; position: absolute; }
+    .about-avatar { width: 190px; height: 190px; }
+    #formation { padding: 72px 20px; }
+    .formation-header { margin-bottom: 48px; }
+    .timeline-item { display: flex; flex-direction: column; padding: 0 0 48px; }
+    .timeline-year { text-align: left; padding: 0 0 10px; font-size: 0.78rem; }
+    .timeline-row { display: flex !important; align-items: flex-start; }
+    .timeline-connector { flex-shrink: 0; margin-right: 16px; height: auto; align-self: stretch; }
+    .timeline-dot { margin-top: 4px; }
+    .timeline-content { padding-left: 0; flex: 1; }
+    .timeline-degree { font-size: 1.1rem; }
+    #competences { grid-template-columns: 1fr; padding: 72px 20px; gap: 48px; }
+    #experiences { padding: 72px 20px; }
+    .exp-grid { grid-template-columns: 1fr; }
+    #contact { padding: 72px 20px; }
+    .contact-links { flex-direction: column; align-items: center; }
+    footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  }
+
+  @media (max-width: 480px) {
+    .skills-right { grid-template-columns: 1fr; }
+    .hero-orb { width: 300px; height: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="nav-logo">Lola <span>M.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#competences">Compétences</a></li>
+    <li><a href="#experiences">Expériences</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Me contacter</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb"></div>
+  <p class="hero-eyebrow">Étudiante en Licence AES · IUT de Roanne</p>
+  <h1 class="hero-title">Lola<br><em>Marotel</em></h1>
+  <p class="hero-sub">Action sociale, administration<br>et engagement au service des autres.</p>
+  <div class="hero-badges">
+    <span class="badge teal">IUT de Roanne</span>
+    <span class="badge">Licence AES · 2e année</span>
+    <span class="badge">Conseillère municipale · Sapeur-pompier</span>
+  </div>
+</section>
+
+<!-- À PROPOS -->
+<section id="about">
+  <div class="about-visual">
+    <div class="about-img-parallax">
+      <img src="moi.jpg" class="about-avatar" alt="Lola Marotel">
+    </div>
+    <div class="about-deco"></div>
+  </div>
+  <div class="about-content">
+    <p class="section-label reveal">À propos</p>
+    <h2 class="section-title reveal d1">Au service<br>des autres,<br>sur tous les terrains.</h2>
+    <p class="reveal d2">Étudiante en 2e année de Licence AES à l’IUT de Roanne, je joins rigueur administrative et sens du contact. Mon parcours mêle économie, sociologie et économie sociale et familiale, avec des expériences auprès de publics variés : personnes âgées, enfants, habitants de ma commune.</p>
+    <p class="reveal d2">Sapeur-pompier depuis 2022 et conseillère municipale à Damas-et-Bettegney, j’ai appris à rester calme, à écouter et à agir en équipe.</p>
+    <div class="about-stats reveal d3">
+      <div class="stat-card"><div class="stat-number">2e</div><div class="stat-label">Année de Licence AES</div></div>
+      <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Expériences & engagements</div></div>
+      <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">Langues pratiquées</div></div>
+      <div class="stat-card"><div class="stat-number">2022</div><div class="stat-label">Sapeur-pompier depuis</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="formation-header">
+    <p class="section-label reveal">Parcours</p>
+    <h2 class="section-title reveal d1">Formation</h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2026 → Présent</div>
+      <div class="timeline-row">
+        <div class="timeline-connector">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-school">IUT de Roanne</div>
+          <div class="timeline-degree">Licence AES — 2e année</div>
+          <div class="timeline-desc">Administration et échanges sociaux : cadre juridique, gestion, action sociale et relation aux publics. Entrée directe en L2 après le BTS.</div>
+          <div class="timeline-tags">
+            <span class="tag">Administration</span>
+            <span class="tag">Social</span>
+            <span class="tag">Gestion</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2024 – Juillet 2026</div>
+      <div class="timeline-row">
+        <div class="timeline-connector">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-school">MFR Gugnécourt</div>
+          <div class="timeline-degree">BTS Économie sociale familiale (alternance)</div>
+          <div class="timeline-desc">Diagnostic social et territorial, conduite d’enquêtes, conception d’actions collectives, en alternance à l’EHPAD Saint-Déodat.</div>
+          <div class="timeline-tags">
+            <span class="tag">ESF</span>
+            <span class="tag">Alternance</span>
+            <span class="tag">Diagnostic social</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2023 – 2024</div>
+      <div class="timeline-row">
+        <div class="timeline-connector">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-school">Université de Lille</div>
+          <div class="timeline-degree">L1 double licence Économie – Sociologie</div>
+          <div class="timeline-desc">Première année pluridisciplinaire en économie et sociologie.</div>
+          <div class="timeline-tags">
+            <span class="tag">Économie</span>
+            <span class="tag">Sociologie</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2023</div>
+      <div class="timeline-row">
+        <div class="timeline-connector">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-school">Lycée Claude Gellée · Épinal</div>
+          <div class="timeline-degree">Baccalauréat — mention Bien</div>
+          <div class="timeline-desc">Brevet national des jeunes sapeurs-pompiers obtenu en 2022.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPÉTENCES -->
+<section id="competences">
+  <div class="skills-left">
+    <p class="section-label reveal">Expertise</p>
+    <h2 class="section-title reveal d1">Compétences<br>& langues</h2>
+    <p class="reveal d2">Des qualités humaines forgées sur le terrain, en EHPAD, en périscolaire, en intervention de secours et au conseil municipal.</p>
+    
+    <div class="skill-row reveal">
+      <div class="skill-name"><span>Français</span><span class="skill-pct">Langue maternelle</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="100"></div></div>
+    </div>
+    <div class="skill-row reveal d1">
+      <div class="skill-name"><span>Anglais</span><span class="skill-pct">B1</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="50"></div></div>
+    </div>
+    <div class="skill-row reveal d2">
+      <div class="skill-name"><span>Allemand</span><span class="skill-pct">B1</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="50"></div></div>
+    </div>
+    <p class="reveal d2" style="margin-top:28px; color:rgba(255,255,255,0.45); font-size:0.9rem;">
+      Loisirs : lecture · musique · sport · voyage
+    </p>
+  </div>
+
+  <div class="skills-right reveal d1">
+    <div class="skill-card">
+      <div class="skill-card-icon">🤝</div>
+      <div class="skill-card-name">Travail en équipe</div>
+      <div class="skill-card-desc">Coordination en intervention comme en collectivité</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🔄</div>
+      <div class="skill-card-name">Capacité d’adaptation</div>
+      <div class="skill-card-desc">Publics, structures et missions variés</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">💬</div>
+      <div class="skill-card-name">Aisance relationnelle</div>
+      <div class="skill-card-desc">Écoute, médiation, échanges avec familles et usagers</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🧭</div>
+      <div class="skill-card-name">Autonomie</div>
+      <div class="skill-card-desc">Initiative et organisation personnelle</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🧩</div>
+      <div class="skill-card-name">Polyvalence</div>
+      <div class="skill-card-desc">Du social à l’urgence, de l’administratif au terrain</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🛡️</div>
+      <div class="skill-card-name">Sens des responsabilités</div>
+      <div class="skill-card-desc">Maîtrise du stress, analyse et prévention des risques</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPÉRIENCES -->
+<section id="experiences">
+  <div>
+    <p class="section-label reveal">Terrain</p>
+    <h2 class="section-title reveal d1">Expériences &<br>engagements</h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-card reveal">
+      <div class="exp-period">En cours</div>
+      <div class="exp-company">Conseillère municipale</div>
+      <div class="exp-role">Damas-et-Bettegney</div>
+      <div class="exp-desc">• Participation à la vie de la commune
+- Décisions collectives et service public local
+- Lien avec les habitants</div>
+      <div class="exp-skills"><span class="exp-skill">Vie locale</span><span class="exp-skill">Service public</span></div>
+    </div>
+
+    <div class="exp-card reveal d1">
+      <div class="exp-period">2024 – 2026 · Alternance</div>
+      <div class="exp-company">EHPAD Saint-Déodat</div>
+      <div class="exp-role">Technicienne en économie sociale et familiale</div>
+      <div class="exp-desc">• Analyse des besoins des publics
+- Enquêtes et investigations sociales
+- Diagnostic social et territorial
+- Actions collectives et médiation</div>
+      <div class="exp-skills"><span class="exp-skill">Diagnostic social</span><span class="exp-skill">Médiation</span></div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-period">2022 → Aujourd’hui</div>
+      <div class="exp-company">SDIS 88</div>
+      <div class="exp-role">Sapeur de première classe</div>
+      <div class="exp-desc">• Aide et secours à la personne
+- Gestion d’incendie et de situations d’urgence
+- Analyse et prévention des risques</div>
+      <div class="exp-skills"><span class="exp-skill">Secours</span><span class="exp-skill">Maîtrise du stress</span></div>
+    </div>
+
+    <div class="exp-card reveal d1">
+      <div class="exp-period">2023 – 2024</div>
+      <div class="exp-company">Maison des Genêts</div>
+      <div class="exp-role">Assistante péri-scolaire</div>
+      <div class="exp-desc">• Adaptation pédagogique
+- Gestion des conflits
+- Communication avec les parents</div>
+      <div class="exp-skills"><span class="exp-skill">Pédagogie</span><span class="exp-skill">Bienveillance</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal">Parlons-nous</p>
+  <h2 class="section-title reveal d1">Disponible pour<br>un stage du 4 au<br>29 janvier 2027.</h2>
+  <p class="contact-sub reveal d2">Étudiante en 2e année de Licence AES à l’IUT de Roanne.<br>Ouverte aux opportunités à Lille, Épinal, Nancy, Lyon et Roanne.</p>
+  <div class="contact-links reveal d3">
+    <a href="mailto:lola.marotel@etu.univ-st-etienne.fr" class="contact-btn primary">M’écrire</a>
+    <a href="tel:+33640926843" class="contact-btn secondary">06 40 92 68 43</a>
+    <a target="_blank" rel="noopener" class="contact-btn secondary" href="#">Télécharger le CV</a>
+  </div>
+  <div class="contact-info reveal">
+    <p>📍 Roanne (42) &nbsp;·&nbsp; 🎓 IUT de Roanne &nbsp;·&nbsp; lola.marotel@etu.univ-st-etienne.fr</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Lola Marotel — Portfolio</span>
+  <span>Licence AES · <strong>IUT de Roanne</strong></span>
+</footer>
+
+<script>
+// ─── SCROLL REVEAL ───
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ─── SKILL BARS ───
+const so = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const f = e.target.querySelector('.skill-fill');
+      if (f) f.style.width = f.dataset.width + '%';
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.skill-row').forEach(r => so.observe(r));
+
+// ─── PARALLAXE DE LA PHOTO ───
+const isMobile = () => window.innerWidth <= 900;
+function parallax() {
+  if (isMobile()) return;
+  const aboutParallax = document.querySelector('.about-img-parallax');
+  if (aboutParallax && aboutParallax.parentElement) {
+    const rect = aboutParallax.parentElement.getBoundingClientRect();
+    const progress = (window.innerHeight / 2 - rect.top) / window.innerHeight;
+    aboutParallax.style.transform = `translateY(${progress * 45}px)`;
+  }
+}
+window.addEventListener('scroll', () => requestAnimationFrame(parallax), { passive: true });
+parallax();
+
+// ─── NAVBAR OPACITÉ ───
+const nb = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  nb.style.background = window.scrollY > 60 ? 'rgba(26, 30, 33, 0.95)' : 'rgba(26, 30, 33, 0.82)';
+}, { passive: true });
+</script>
+</body>
+</html>
